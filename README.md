@@ -1,75 +1,76 @@
-# CMPT 733 Project - GrocerySegmentAI
+# GrocerySegmentAI
 
-<center><img style="max-width:500px;" src="./imgs/grocery.jpeg"></center>
+GrocerySegmentAI is a PAAS for grocery businesses. It provides a means for companies to upload customer data and receive predictions on the products that each of their customers will order next. 
 
-GrocerySegmentAI is a platform as a service for grocery businesses. This product provides a way for these businesses to upload customer data and receive accurate predictions on which customers will buy a specific product on their next order. 
-
-For more information please refer see the following [blog post](https://medium.com/@DiversiT/grocerysegmentai-the-convergence-of-artificial-intelligence-and-market-segmentation-eee5b47c15fc). 
+For more information please refer to the following [blog post](https://medium.com/@BrendanArtley/grocerysegmentai-the-convergence-of-artificial-intelligence-and-market-segmentation-eee5b47c15fc). 
 
 ## What problem does this solve?
 
-Every business is driven by customers. For a business to be successful, it must know what its customers want now, and what they want in the future. This allows businesses to optimize marketing strategies, improve customer experience, and maximize each customer’s value.
+Every grocery business is driven by its customers. For it to be successful, it must know what its customers want now, and what they want in the future. This allows them to optimize marketing strategies, improve customer experience, and maximize customer value.
 
-Furthermore, 30% of food in North-American grocery stores is thrown away. By predicting which products will be bought next, we are providing a means of improving inventory management with a data-driven approach.
+Additionally, 30% of food in North-American grocery stores is thrown away. By predicting which products will be bought next, we are providing a means of improving inventory management and reducing food waste with machine learning.
 
-<center><img style="max-width:500px;" src="./imgs/wasted_food.jpeg"></center>
+<center><img width="550" src="./imgs/wasted_food.jpeg"></center>
 
-## Our Solution
+## Solution
 
-GrocerySegmentAI. This product is an end-end solution that is easy to use and requires little technical expertise. A business can simply upload their customer data into an S3 bucket on AWS, wait for their model to train, and thats it! The business can then enter a product_id, and they are given a list of their customers who are likely to buy that product next. 
+GrocerySegmentAI. This product is an end-end solution that is easy to use and requires little technical expertise. You can simply upload customer data into an S3 bucket on AWS, wait for a model to train, and that's it! You can then enter a product_id, and you are given a list of customers who are likely to buy that product on their next order. 
 
 ## Technologies
 
-We used many technologies and packages to build this product. In the following image, we show the main tools used.
+This product was built with many technologies and packages. In the following image, we show the main ones used.
 
-<center><img style="max-width:500px;" src="./imgs/technologies.jpg"></center>
+<center><img width="550" src="./imgs/technologies.jpg"></center>
 
 ## User Interface
 
-The interface created for this product was built with ease of use being a priority. In the first GIF, we can see a user enter their S3 bucket information to initiate the model training. During training, the user can get a status update via the interface. The training time depends on the size of the input data.
+The interface was created with ease of use being a priority. In the first GIF, we can see a user enter their S3 bucket information to initiate model training. During training, the user can get status updates via the interface. The training time depends on the size of the input data.
 
-<center><img style="max-width:500px;" src="./imgs/gif1.gif"></center>
+<center><img width="550" src="./imgs/gif1.gif"></center>
 
-In the second GIF, model training has been completed, and a user is now selecting a product id to query. When they submit this form, they receive a CSV file of all the customers that will buy that product on their next order.
+In the second GIF, model training is complete, and the user is now selecting a product id. When they submit this form, they receive a CSV file containing all of the customers that will buy the selected product on their next order.
 
-<center><img style="max-width:500px;" src="./imgs/gif2.gif"></center>
+<center><img width="550" src="./imgs/gif2.gif"></center>
 
-## Our Dataset
+## Dataset
 
-Due to privacy concerns, there are a very small number of customer datasets available in the public domain. That being said, we built this product using the [Instacart Dataset](https://www.kaggle.com/c/instacart-market-basket-analysis). This dataset is anonymized and contains a sample of over 3 million grocery orders from more than 200,000 Instacart users.
+Due to privacy concerns, there are a very small number of comprehensive customer datasets available in the public domain. That being said, we were able to build this product using the [Instacart Dataset](https://www.kaggle.com/c/instacart-market-basket-analysis). This dataset is anonymized and contains a sample of over 3 million grocery orders from more than 200,000 Instacart users.
 
-<center><img style="max-width:500px;" src="./imgs/instacart_logo.jpeg"></center>
+<center><img width="550" src="./imgs/instacart_logo.jpeg"></center>
 
-We simplified this dataset by combining features into one column to make it consistent with our format. This modified version of the dataset can be found [here](https://www.kaggle.com/datasets/brendanartley/simplifiedinstacartdata).
+We simplified this dataset by combining features whilst losing zero information. We did this to reduce the number of required columns for the product. This modified version of the dataset can be found [here](https://www.kaggle.com/datasets/brendanartley/simplifiedinstacartdata).
 
-## Best Model
+## Model
 
-Our best performing model was an XGBoost Classifier that achieved an F1-score of 0.39. We used F1-score rather than raw accuracy as about 90% of the predicted labels were 0. This metric gave us a more realistic measure of performance. We also used a subset of the data and a framework called Optuna to find the best hyperparameters for this model.
+Our best model was an XGBoost Classifier that achieved an F1 score of 0.39. We used F1-score rather than raw accuracy as about 90% of the predicted labels were 0. This metric gave us a more realistic measure of performance. We also used a subset of the data and a framework called Optuna to find the best hyperparameters for this model.
 
-<center><img style="max-width:500px;" src="./imgs/dask_xgb.png"></center>
+<center><img width="550" src="./imgs/dask_xgb.png"></center>
 
 Other models that we tested included Logistic Regression, Tabnet, LGBM, and K-means clustering.
 
-## Evaluating Predictions
+## Performance
 
-Using cross-validation we were able to get predictions on every user in the dataset and have a set of predictions that mirrored the true model performance in the real world. We found that the model was able to accurately predict some products, and others not so much. In this first image, we have some products on which the model performed well on, and in the second image, we have those where the model did not perform as well. The numerical column is the f1-score of each product. As you can see we were able to predict milk, soda, and bananas very accurately, but we could not predict aluminum foil or organic yellow peaches very well.
+Using cross-validation we were able to get predictions on every user in the dataset. This gave us an evaluation of model performance in the real world.
 
-<center><img style="max-width:500px;" src="./imgs/good_preds.png"></center>
+After analyzing predictions, we found that the model was able to accurately predict some products, and others not so much. In this first image, we see the products which the model performed well on, and in the second image, we have those where the model did not. The numerical column is the f1-score of each product. 
+
+<center><img width="550" src="./imgs/good_preds.png"></center>
 <br></br>
-<center><img style="max-width:500px;" src="./imgs/bad_preds.png"></center>
+<center><img width="550" src="./imgs/bad_preds.png"></center>
 
-## Further Improvements
+## Improvements
 
-The first thing we would have liked to improve on is evaluating our product. Given the privacy concerns of customer data, there are very few datasets in the public domain. Unfortunately for us, this meant that we were only able to test our model on data from one grocery business. Moreover, we would also test our product in other industries where purchases are frequent such as restaurants but again it may be difficult to find these datasets in the public domain.
+The first thing we would have liked to improve on is the product evaluation. Given the privacy concerns we touched on above, there are very few customer datasets in the public domain. Unfortunately for us, this meant that we were only able to test our model on data from one grocery business. Moreover, we would also like to test our product in other industries with frequent purchase activities, such as restaurants and retail stores. 
 
-We would also want to explore RNN and LSTM based models as they typically perform well on time series data. Given that our orders are in a sequential format, it would be interesting to see if we could incorporate these models into our pipeline.
+Second, we would also want to explore RNN and LSTM-based models as they typically perform well on time series data. Given that our orders are in a sequential format, it would be interesting to see if we could incorporate these models into the pipeline.
 
-## Setup Instructions
-Due to the complexity of the service, the setup is also complex. We have provided a comprehensive guide below to explain this setup process.
+## Installation
+
+We have provided a comprehensive guide below to explain this setup process.
 
 Required Software/Packages
 - Make sure that you have and up to date Java JDK installed (>12.0.2)
-- Download and install MySQL server, MySQL Workbench, JRE and Eclipse EE Edition
+- Download and install MySQL server, MySQL Workbench, JRE, and Eclipse EE Edition
 - Run `pip3 install -r requirements.txt` from the repo to install python packages
 
 Import the project
